@@ -1,34 +1,40 @@
 import "./App.css";
 import "./theme.css";
-import { useState } from "react";
+import { useReducer } from "react";
+const intialData = { name: "MohamedEmad", age: 28, count: 0, theme: "light" };
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "CHANGE_NAME":
+      return { ...state, name: action.newValue };
+    case "CHANGE_TOGGLE":
+      return state.map((todo) => {
+        if (todo.id === action.id) {
+          return { ...state, theme: action.newValue };
+        } else {
+          return todo;
+        }
+      });
+    case "CHANGE_AGE":
+      return { ...state, age: action.newValue };
+    case "CHANGE_COUNT":
+      return { ...state, count: action.newValue };
+    case "CHANGE_THEME":
+      return { ...state, theme: action.newValue };
+  
+    default:
+      return state;
+  }
+};
 function App() {
-  const [person, setperson] = useState("Mohamed Emad");
-  const changeName = () => {
-    setperson("Mohab");
-  };
-  const [age, setage] = useState(28);
-  const changeAge = () => {
-    setage(33);
-  };
-  const [count, setcount] = useState(0);
-  const changeCount = () => {
-    setcount(count + 1);
-  };
-  const [theme, settheme] = useState("");
-
+  const [alldata, dispatch] = useReducer(reducer, intialData);
   return (
-    <div className={`App ${theme}`}>
-      <button
-        onClick={() => {
-          settheme(theme === "" ? "Dark" : "");
-        }}
+    <div className={`App ${alldata.theme}`}>
+      <button onClick={() => {dispatch({ type: "CHANGE_THEME", newValue: alldata.theme=="Light"? "Dark":"Light" });
+ }} style={{ marginBottom: "44px" }}>ToggleTheme</button>
+      <div onChange={() => {dispatch({ type: "CHANGE_THEME", newValue: alldata.theme=="Light"? "Dark":"Light" });
+ }} className="btn-container"
         style={{ marginBottom: "44px" }}
       >
-        ToggleTheme
-      </button>
-      <div   onChange={() => {
-          settheme(theme === "" ? "Dark" : "");
-        }} className="btn-container" style={{ marginBottom: "44px" }}>
         <i className="fa fa-sun-o" aria-hidden="true" />
         <label className="switch btn-color-mode-switch">
           <input
@@ -50,7 +56,7 @@ function App() {
       <div>
         <button
           onClick={() => {
-            settheme("Light");
+            dispatch({ type: "CHANGE_THEME", newValue: "Light" });
           }}
           style={{ marginRight: "26px" }}
         >
@@ -58,7 +64,7 @@ function App() {
         </button>
         <button
           onClick={() => {
-            settheme("Dark");
+            dispatch({ type: "CHANGE_THEME", newValue: "Dark" });
           }}
           style={{ marginRight: "26px" }}
         >
@@ -66,7 +72,7 @@ function App() {
         </button>
         <button
           onClick={() => {
-            settheme("Grey");
+            dispatch({ type: "CHANGE_THEME", newValue: "Grey" });
           }}
           style={{ marginRight: "26px" }}
         >
@@ -74,19 +80,37 @@ function App() {
         </button>
         <button
           onClick={() => {
-            settheme("Pink");
+            dispatch({ type: "CHANGE_THEME", newValue: "Pink" });
           }}
           style={{ marginRight: "26px" }}
         >
           Pink
         </button>
       </div>
-      <h2>My name is {person}</h2>
-      <button onClick={changeName}>Change name</button>
-      <h2>My age is {age}</h2>
-      <button onClick={changeAge}>My age</button>
-      <h2>count is :{count} </h2>
-      <button onClick={changeCount}>Press</button>
+      <h2>My name is {alldata.name}</h2>
+      <button
+        onClick={() => {
+          dispatch({ type: "CHANGE_NAME", newValue: "Mohab" });
+        }}
+      >
+        Change name
+      </button>
+      <h2>My age is {alldata.age}</h2>
+      <button
+        onClick={() => {
+          dispatch({ type: "CHANGE_AGE", newValue: 29 });
+        }}
+      >
+        My age{" "}
+      </button>
+      <h2>count is {alldata.count}</h2>
+      <button
+        onClick={() => {
+          dispatch({ type: "CHANGE_COUNT", newValue: alldata.count + 1 });
+        }}
+      >
+        Press
+      </button>
     </div>
   );
 }
