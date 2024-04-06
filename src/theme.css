@@ -1,0 +1,23 @@
+.App{
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+}
+.App.Light{
+  background-color: white;
+}
+.App.Dark{
+  background-color: #242424;
+  color: white;
+}
+.App.Grey{
+  background-color: grey;
+  color: white;
+}
+.App.Pink{
+  background-color: rgb(255, 192, 252);
+  
+}
